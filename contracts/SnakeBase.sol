@@ -5,14 +5,14 @@ import "./SnakeAccessControl.sol";
 
 /// @title Base contract for CryptoKitties. Holds all common structs, events and base variables.
 /// @author Axiom Zen (https://www.axiomzen.co)
-/// @dev See the KittyCore contract documentation to understand how the various contract facets are arranged.
+/// @dev See the SnakeCore contract documentation to understand how the various contract facets are arranged.
 contract SnakeBase is SnakeAccessControl {
     /*** EVENTS ***/
 
     /// @dev The Birth event is fired whenever a new kitten comes into existence. This obviously
     ///  includes any time a cat is created through the giveBirth method, but it is also called
     ///  when a new gen0 cat is created.
-    event Birth(address indexed owner, uint256 kittyId, uint256 matronId, uint256 sireId, uint256 genes);
+    event Birth(address indexed owner, uint256 snakeId, uint256 matronId, uint256 sireId, uint256 genes);
 
     /// @dev Transfer event as defined in current draft of ERC721. Emitted every time a kitten
     ///  ownership is assigned, including births.
@@ -20,13 +20,13 @@ contract SnakeBase is SnakeAccessControl {
 
     /*** DATA TYPES ***/
 
-    /// @dev The main Kitty struct. Every cat in CryptoKitties is represented by a copy
+    /// @dev The main Snake struct. Every cat in CryptoKitties is represented by a copy
     ///  of this structure, so great care was taken to ensure that it fits neatly into
     ///  exactly two 256-bit words. Note that the order of the members in this structure
     ///  is important because of the byte-packing rules used by Ethereum.
     ///  Ref: http://solidity.readthedocs.io/en/develop/miscellaneous.html
-    struct Kitty {
-        // The Kitty's genetic code is packed into these 256-bits, the format is
+    struct Snake {
+        // The Snake's genetic code is packed into these 256-bits, the format is
         // sooper-sekret! A cat's genes never change.
         uint256 genes;
 
@@ -54,7 +54,7 @@ contract SnakeBase is SnakeAccessControl {
         uint32 siringWithId;
 
         // Set to the index in the cooldown array (see below) that represents
-        // the current cooldown duration for this Kitty. This starts at zero
+        // the current cooldown duration for this Snake. This starts at zero
         // for gen0 cats, and is initialized to floor(generation/2) for others.
         // Incremented by one for each successful breeding action, regardless
         // of whether this cat is acting as matron or sire.
@@ -95,12 +95,12 @@ contract SnakeBase is SnakeAccessControl {
 
     /*** STORAGE ***/
 
-    /// @dev An array containing the Kitty struct for all Kitties in existence. The ID
+    /// @dev An array containing the Snake struct for all Kitties in existence. The ID
     ///  of each cat is actually an index into this array. Note that ID 0 is a negacat,
-    ///  the unKitty, the mythical beast that is the parent of all gen0 cats. A bizarre
+    ///  the unSnake, the mythical beast that is the parent of all gen0 cats. A bizarre
     ///  creature that is both matron and sire... to itself! Has an invalid genetic code.
     ///  In other words, cat ID 0 is invalid... ;-)
-    Kitty[] kitties;
+    Snake[] kitties;
 
     /// @dev A mapping from cat IDs to the address that owns them. All cats have
     ///  some valid owner address, even gen0 cats are created with a non-zero owner.
@@ -110,17 +110,17 @@ contract SnakeBase is SnakeAccessControl {
     //  Used internally inside balanceOf() to resolve ownership count.
     mapping (address => uint256) ownershipTokenCount;
 
-    /// @dev A mapping from KittyIDs to an address that has been approved to call
-    ///  transferFrom(). Each Kitty can only have one approved address for transfer
+    /// @dev A mapping from SnakeIDs to an address that has been approved to call
+    ///  transferFrom(). Each Snake can only have one approved address for transfer
     ///  at any time. A zero value means no approval is outstanding.
     mapping (uint256 => address) public kittyIndexToApproved;
 
-    /// @dev A mapping from KittyIDs to an address that has been approved to use
-    ///  this Kitty for siring via breedWith(). Each Kitty can only have one approved
+    /// @dev A mapping from SnakeIDs to an address that has been approved to use
+    ///  this Snake for siring via breedWith(). Each Snake can only have one approved
     ///  address for siring at any time. A zero value means no approval is outstanding.
     mapping (uint256 => address) public sireAllowedToAddress;
 
-    /// @dev Assigns ownership of a specific Kitty to an address.
+    /// @dev Assigns ownership of a specific Snake to an address.
     function _transfer(address _from, address _to, uint256 _tokenId) internal {
         // since the number of kittens is capped to 2^32
         // there is no way to overflow this
@@ -147,7 +147,7 @@ contract SnakeBase is SnakeAccessControl {
     /// @param _sireId The kitty ID of the sire of this cat (zero for gen0)
     /// @param _generation The generation number of this cat, must be computed by caller.
     /// @param _genes The kitty's genetic code.
-    /// @param _owner The inital owner of this cat, must be non-zero (except for the unKitty, ID 0)
+    /// @param _owner The inital owner of this cat, must be non-zero (except for the unSnake, ID 0)
     function _createKitty(
         uint256 _matronId,
         uint256 _sireId,
@@ -166,7 +166,7 @@ contract SnakeBase is SnakeAccessControl {
         require(_sireId <= 4294967295);
         require(_generation <= 65535);
 
-        Kitty memory _kitty = Kitty({
+        Snake memory _kitty = Snake({
             genes: _genes,
             birthTime: uint64(now),
             cooldownEndTime: 0,
