@@ -588,16 +588,16 @@ contract("SnakeCore", function(accounts) {
 
     it("should fail to rescue kitties that aren't owned by the contract", async function() {
       await util.expectThrow(
-        coreC.rescueLostKitty(kittyId2, user1, { from: coo })
+        coreC.rescueLostSnake(kittyId2, user1, { from: coo })
       );
     });
     it("should fail to rescue kitties if not coo", async function() {
       await util.expectThrow(
-        coreC.rescueLostKitty(kittyId1, user1, { from: user1 })
+        coreC.rescueLostSnake(kittyId1, user1, { from: user1 })
       );
     });
     it("should be able to rescue kitties that are owned by the contract", async function() {
-      await coreC.rescueLostKitty(kittyId1, user1, { from: coo });
+      await coreC.rescueLostSnake(kittyId1, user1, { from: coo });
       const kitty1Owner = await coreC.snakeIndexToOwner(kittyId1);
       eq(kitty1Owner, user1);
     });
