@@ -18,7 +18,7 @@ const GeneScienceMock = artifacts.require(
 const SaleClockAuction = artifacts.require("./SaleClockAuction.sol");
 const SiringClockAuction = artifacts.require("./SiringClockAuction.sol");
 
-contract("KittyCore", function(accounts) {
+contract("SnakeCore", function(accounts) {
   // This only runs once across all test suites
   before(() => util.measureGas(accounts));
   after(() => util.measureGas(accounts));

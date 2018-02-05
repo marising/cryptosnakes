@@ -6,7 +6,7 @@ import "./KittyMinting.sol";
 /// @title CryptoKitties: Collectible, breedable, and oh-so-adorable cats on the Ethereum blockchain.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev The main CryptoKitties contract, keeps track of kittens so they don't wander around and get lost.
-contract KittyCore is KittyMinting {
+contract SnakeCore is KittyMinting {
 
     // This is the main CryptoKitties contract. In order to keep our code seperated into logical sections,
     // we've broken it up in two ways. First, we have several seperately-instantiated sibling contracts
@@ -50,7 +50,7 @@ contract KittyCore is KittyMinting {
     address public newContractAddress;
 
     /// @notice Creates the main CryptoKitties smart contract instance.
-    function KittyCore() public {
+    function SnakeCore() public {
         // Starts paused.
         paused = true;
 
