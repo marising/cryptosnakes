@@ -131,10 +131,10 @@ contract("SnakeCore", function(accounts) {
       // 4 created
       eq(nKitties.toNumber(), 4);
 
-      eq(coo, await coreC.kittyIndexToOwner(1), "kitten 1");
-      eq(coo, await coreC.kittyIndexToOwner(2), "kitten 2");
-      eq(coo, await coreC.kittyIndexToOwner(3), "kitten 3");
-      eq(user2, await coreC.kittyIndexToOwner(4), "kitten 4");
+      eq(coo, await coreC.snakeIndexToOwner(1), "kitten 1");
+      eq(coo, await coreC.snakeIndexToOwner(2), "kitten 2");
+      eq(coo, await coreC.snakeIndexToOwner(3), "kitten 3");
+      eq(user2, await coreC.snakeIndexToOwner(4), "kitten 4");
     });
   });
 
@@ -200,7 +200,7 @@ contract("SnakeCore", function(accounts) {
       kitD = 4;
       // give kitD to user1
       await coreC.transfer(user1, kitD);
-      eq(await coreC.kittyIndexToOwner(kitD), user1);
+      eq(await coreC.snakeIndexToOwner(kitD), user1);
     });
 
     it("kitten cant sire itself", async function() {
@@ -301,7 +301,7 @@ contract("SnakeCore", function(accounts) {
       eq(attr.generation, 1);
       // equation: mom's 10 + sire's 100 / 2 + 1
       eq(attr.genes.toNumber(), 56);
-      const kitDOwner = await coreC.kittyIndexToOwner(kitD);
+      const kitDOwner = await coreC.snakeIndexToOwner(kitD);
       eq(kitDOwner, coo);
     });
 
@@ -598,7 +598,7 @@ contract("SnakeCore", function(accounts) {
     });
     it("should be able to rescue kitties that are owned by the contract", async function() {
       await coreC.rescueLostKitty(kittyId1, user1, { from: coo });
-      const kitty1Owner = await coreC.kittyIndexToOwner(kittyId1);
+      const kitty1Owner = await coreC.snakeIndexToOwner(kittyId1);
       eq(kitty1Owner, user1);
     });
   });

@@ -30,7 +30,7 @@ contract SnakeMinting is SnakeAuction {
 
         promoCreatedCount++;
         gen0CreatedCount++;
-        _createKitty(0, 0, 0, _genes, _owner);
+        _createSnake(0, 0, 0, _genes, _owner);
     }
 
     /// @dev Creates a new gen0 kitty with the given genes and
@@ -38,7 +38,7 @@ contract SnakeMinting is SnakeAuction {
     function createGen0Auction(uint256 _genes) public onlyCOO {
         require(gen0CreatedCount < gen0CreationLimit);
 
-        uint256 kittyId = _createKitty(0, 0, 0, _genes, address(this));
+        uint256 kittyId = _createSnake(0, 0, 0, _genes, address(this));
         _approve(kittyId, saleAuction);
 
         saleAuction.createAuction(

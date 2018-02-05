@@ -28,14 +28,14 @@ contract SnakeOwnership is SnakeBase, ERC721 {
     /// @param _claimant the address we are validating against.
     /// @param _tokenId kitten id, only valid when > 0
     function _owns(address _claimant, uint256 _tokenId) internal view returns (bool) {
-        return kittyIndexToOwner[_tokenId] == _claimant;
+        return snakeIndexToOwner[_tokenId] == _claimant;
     }
 
     /// @dev Checks if a given address currently has transferApproval for a particular Kitty.
     /// @param _claimant the address we are confirming kitten is approved for.
     /// @param _tokenId kitten id, only valid when > 0
     function _approvedFor(address _claimant, uint256 _tokenId) internal view returns (bool) {
-        return kittyIndexToApproved[_tokenId] == _claimant;
+        return snakeIndexToApproved[_tokenId] == _claimant;
     }
 
     /// @dev Marks an address as being approved for transferFrom(), overwriting any previous
@@ -44,7 +44,7 @@ contract SnakeOwnership is SnakeBase, ERC721 {
     ///  _approve() and transferFrom() are used together for putting Kitties on auction, and
     ///  there is no value in spamming the log with Approval events in that case.
     function _approve(uint256 _tokenId, address _approved) internal {
-        kittyIndexToApproved[_tokenId] = _approved;
+        snakeIndexToApproved[_tokenId] = _approved;
     }
 
     /// @dev Transfers a kitty owned by this contract to the specified address.
@@ -146,7 +146,7 @@ contract SnakeOwnership is SnakeBase, ERC721 {
         view
         returns (address owner)
     {
-        owner = kittyIndexToOwner[_tokenId];
+        owner = snakeIndexToOwner[_tokenId];
 
         require(owner != address(0));
     }
@@ -167,7 +167,7 @@ contract SnakeOwnership is SnakeBase, ERC721 {
     {
         uint256 count = 0;
         for (uint256 i = 1; i <= totalSupply(); i++) {
-            if (kittyIndexToOwner[i] == _owner) {
+            if (snakeIndexToOwner[i] == _owner) {
                 if (count == _index) {
                     return i;
                 } else {

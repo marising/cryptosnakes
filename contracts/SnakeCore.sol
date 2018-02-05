@@ -61,7 +61,7 @@ contract SnakeCore is SnakeMinting {
         cooAddress = msg.sender;
 
         // start with the mythical kitten 0 - so we don't have generation-0 parent issues
-        _createKitty(0, 0, 0, uint256(-1), address(0));
+        _createSnake(0, 0, 0, uint256(-1), address(0));
     }
 
     /// @dev Used to mark the smart contract as upgraded, in case there is a serious

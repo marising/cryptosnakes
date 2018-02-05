@@ -53,8 +53,8 @@ contract SnakeBreeding is SnakeOwnership {
     ///  and matron have the same owner, or if the sire has given siring permission to
     ///  the matron's owner (via approveSiring()).
     function _isSiringPermitted(uint256 _sireId, uint256 _matronId) internal view returns (bool) {
-        address matronOwner = kittyIndexToOwner[_matronId];
-        address sireOwner = kittyIndexToOwner[_sireId];
+        address matronOwner = snakeIndexToOwner[_matronId];
+        address sireOwner = snakeIndexToOwner[_sireId];
 
         // Siring is okay if they have same owner, or if the matron's owner was given
         // permission to breed with this sire.
@@ -261,7 +261,7 @@ contract SnakeBreeding is SnakeOwnership {
         delete sireAllowedToAddress[_sireId];
 
         // Emit the pregnancy event.
-        Pregnant(kittyIndexToOwner[_matronId], _matronId, _sireId);
+        Pregnant(snakeIndexToOwner[_matronId], _matronId, _sireId);
     }
 
     /// @notice Works like breedWith(), but includes a pre-payment of the gas required to call
@@ -323,8 +323,8 @@ contract SnakeBreeding is SnakeOwnership {
         uint256 childGenes = geneScience.mixGenes(matron.genes, sire.genes);
 
         // Make the new kitten!
-        address owner = kittyIndexToOwner[_matronId];
-        uint256 kittenId = _createKitty(_matronId, matron.siringWithId, parentGen + 1, childGenes, owner);
+        address owner = snakeIndexToOwner[_matronId];
+        uint256 kittenId = _createSnake(_matronId, matron.siringWithId, parentGen + 1, childGenes, owner);
 
         // Clear the reference to sire from the matron (REQUIRED! Having siringWithId
         // set is what marks a matron as being pregnant.)

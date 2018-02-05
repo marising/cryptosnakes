@@ -3,24 +3,24 @@ pragma solidity ^0.4.18;
 import "./SnakeAccessControl.sol";
 
 
-/// @title Base contract for CryptoKitties. Holds all common structs, events and base variables.
+/// @title Base contract for CryptoSnakes. Holds all common structs, events and base variables.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev See the SnakeCore contract documentation to understand how the various contract facets are arranged.
 contract SnakeBase is SnakeAccessControl {
     /*** EVENTS ***/
 
-    /// @dev The Birth event is fired whenever a new kitten comes into existence. This obviously
+    /// @dev The Birth event is fired whenever a new snake comes into existence. This obviously
     ///  includes any time a cat is created through the giveBirth method, but it is also called
     ///  when a new gen0 cat is created.
     event Birth(address indexed owner, uint256 snakeId, uint256 matronId, uint256 sireId, uint256 genes);
 
-    /// @dev Transfer event as defined in current draft of ERC721. Emitted every time a kitten
+    /// @dev Transfer event as defined in current draft of ERC721. Emitted every time a snake
     ///  ownership is assigned, including births.
     event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
 
     /*** DATA TYPES ***/
 
-    /// @dev The main Snake struct. Every cat in CryptoKitties is represented by a copy
+    /// @dev The main Snake struct. Every cat in CryptoSnakes is represented by a copy
     ///  of this structure, so great care was taken to ensure that it fits neatly into
     ///  exactly two 256-bit words. Note that the order of the members in this structure
     ///  is important because of the byte-packing rules used by Ethereum.
@@ -38,7 +38,7 @@ contract SnakeBase is SnakeAccessControl {
         // timer (for matrons) as well as the siring cooldown.
         uint64 cooldownEndTime;
 
-        // The ID of the parents of this kitty, set to 0 for gen0 cats.
+        // The ID of the parents of this snake, set to 0 for gen0 cats.
         // Note that using 32-bit unsigned integers limits us to a "mere"
         // 4 billion cats. This number might seem small until you realize
         // that Ethereum currently has a limit of about 500 million
@@ -50,7 +50,7 @@ contract SnakeBase is SnakeAccessControl {
         // Set to the ID of the sire cat for matrons that are pregnant,
         // zero otherwise. A non-zero value here is how we know a cat
         // is pregnant. Used to retrieve the genetic material for the new
-        // kitten when the birth transpires.
+        // snake when the birth transpires.
         uint32 siringWithId;
 
         // Set to the index in the cooldown array (see below) that represents
@@ -95,7 +95,7 @@ contract SnakeBase is SnakeAccessControl {
 
     /*** STORAGE ***/
 
-    /// @dev An array containing the Snake struct for all Kitties in existence. The ID
+    /// @dev An array containing the Snake struct for all Snakes in existence. The ID
     ///  of each cat is actually an index into this array. Note that ID 0 is a negacat,
     ///  the unSnake, the mythical beast that is the parent of all gen0 cats. A bizarre
     ///  creature that is both matron and sire... to itself! Has an invalid genetic code.
@@ -104,7 +104,7 @@ contract SnakeBase is SnakeAccessControl {
 
     /// @dev A mapping from cat IDs to the address that owns them. All cats have
     ///  some valid owner address, even gen0 cats are created with a non-zero owner.
-    mapping (uint256 => address) public kittyIndexToOwner;
+    mapping (uint256 => address) public snakeIndexToOwner;
 
     // @dev A mapping from owner address to count of tokens that address owns.
     //  Used internally inside balanceOf() to resolve ownership count.
@@ -113,7 +113,7 @@ contract SnakeBase is SnakeAccessControl {
     /// @dev A mapping from SnakeIDs to an address that has been approved to call
     ///  transferFrom(). Each Snake can only have one approved address for transfer
     ///  at any time. A zero value means no approval is outstanding.
-    mapping (uint256 => address) public kittyIndexToApproved;
+    mapping (uint256 => address) public snakeIndexToApproved;
 
     /// @dev A mapping from SnakeIDs to an address that has been approved to use
     ///  this Snake for siring via breedWith(). Each Snake can only have one approved
@@ -122,33 +122,33 @@ contract SnakeBase is SnakeAccessControl {
 
     /// @dev Assigns ownership of a specific Snake to an address.
     function _transfer(address _from, address _to, uint256 _tokenId) internal {
-        // since the number of kittens is capped to 2^32
+        // since the number of snakes is capped to 2^32
         // there is no way to overflow this
         ownershipTokenCount[_to]++;
         // transfer ownership
-        kittyIndexToOwner[_tokenId] = _to;
-        // When creating new kittens _from is 0x0, but we can't account that address.
+        snakeIndexToOwner[_tokenId] = _to;
+        // When creating new snakes _from is 0x0, but we can't account that address.
         if (_from != address(0)) {
             ownershipTokenCount[_from]--;
-            // once the kitten is transferred also clear sire allowances
+            // once the snake is transferred also clear sire allowances
             delete sireAllowedToAddress[_tokenId];
             // clear any previously approved ownership exchange
-            delete kittyIndexToApproved[_tokenId];
+            delete snakeIndexToApproved[_tokenId];
         }
         // Emit the transfer event.
         Transfer(_from, _to, _tokenId);
     }
 
-    /// @dev An internal method that creates a new kitty and stores it. This
+    /// @dev An internal method that creates a new snake and stores it. This
     ///  method doesn't do any checking and should only be called when the
     ///  input data is known to be valid. Will generate both a Birth event
     ///  and a Transfer event.
-    /// @param _matronId The kitty ID of the matron of this cat (zero for gen0)
-    /// @param _sireId The kitty ID of the sire of this cat (zero for gen0)
+    /// @param _matronId The snake ID of the matron of this cat (zero for gen0)
+    /// @param _sireId The snake ID of the sire of this cat (zero for gen0)
     /// @param _generation The generation number of this cat, must be computed by caller.
-    /// @param _genes The kitty's genetic code.
+    /// @param _genes The snake's genetic code.
     /// @param _owner The inital owner of this cat, must be non-zero (except for the unSnake, ID 0)
-    function _createKitty(
+    function _createSnake(
         uint256 _matronId,
         uint256 _sireId,
         uint256 _generation,
@@ -159,14 +159,14 @@ contract SnakeBase is SnakeAccessControl {
         returns (uint)
     {
         // These requires are not strictly necessary, our calling code should make
-        // sure that these conditions are never broken. However! _createKitty() is already
+        // sure that these conditions are never broken. However! _createSnake() is already
         // an expensive call (for storage), and it doesn't hurt to be especially careful
         // to ensure our data structures are always valid.
         require(_matronId <= 4294967295);
         require(_sireId <= 4294967295);
         require(_generation <= 65535);
 
-        Snake memory _kitty = Snake({
+        Snake memory _snake = Snake({
             genes: _genes,
             birthTime: uint64(now),
             cooldownEndTime: 0,
@@ -176,25 +176,25 @@ contract SnakeBase is SnakeAccessControl {
             cooldownIndex: 0,
             generation: uint16(_generation)
         });
-        uint256 newKittenId = snakes.push(_kitty) - 1;
+        uint256 newSnakeId = snakes.push(_snake) - 1;
 
         // It's probably never going to happen, 4 billion cats is A LOT, but
         // let's just be 100% sure we never let this happen.
-        require(newKittenId <= 4294967295);
+        require(newSnakeId <= 4294967295);
 
         // emit the birth event
         Birth(
             _owner,
-            newKittenId,
-            uint256(_kitty.matronId),
-            uint256(_kitty.sireId),
-            _kitty.genes
+            newSnakeId,
+            uint256(_snake.matronId),
+            uint256(_snake.sireId),
+            _snake.genes
         );
 
         // This will assign ownership, and also emit the Transfer event as
         // per ERC721 draft
-        _transfer(0, _owner, newKittenId);
+        _transfer(0, _owner, newSnakeId);
 
-        return newKittenId;
+        return newSnakeId;
     }
 }

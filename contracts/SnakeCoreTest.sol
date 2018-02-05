@@ -20,7 +20,7 @@ contract SnakeCoreTest is SnakeCore {
         require(_cloneCount > 0);
 
         for (uint256 i = 0; i < _cloneCount; i++) {
-            _createKitty(0, 0, 0, _genes, msg.sender);
+            _createSnake(0, 0, 0, _genes, msg.sender);
         }
     }
 
