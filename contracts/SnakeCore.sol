@@ -103,7 +103,7 @@ contract SnakeCore is SnakeMinting {
         uint256 generation,
         uint256 genes
     ) {
-        Snake storage kit = kitties[_id];
+        Snake storage kit = snakes[_id];
 
         // if this variable is 0 then it's not gestating
         isGestating = (kit.siringWithId != 0);

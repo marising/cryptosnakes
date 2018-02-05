@@ -100,7 +100,7 @@ contract SnakeBase is SnakeAccessControl {
     ///  the unSnake, the mythical beast that is the parent of all gen0 cats. A bizarre
     ///  creature that is both matron and sire... to itself! Has an invalid genetic code.
     ///  In other words, cat ID 0 is invalid... ;-)
-    Snake[] kitties;
+    Snake[] snakes;
 
     /// @dev A mapping from cat IDs to the address that owns them. All cats have
     ///  some valid owner address, even gen0 cats are created with a non-zero owner.
@@ -176,7 +176,7 @@ contract SnakeBase is SnakeAccessControl {
             cooldownIndex: 0,
             generation: uint16(_generation)
         });
-        uint256 newKittenId = kitties.push(_kitty) - 1;
+        uint256 newKittenId = snakes.push(_kitty) - 1;
 
         // It's probably never going to happen, 4 billion cats is A LOT, but
         // let's just be 100% sure we never let this happen.

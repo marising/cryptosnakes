@@ -131,7 +131,7 @@ contract SnakeAuction is SnakeBreeding {
 
         if (doAutoBirth) {
             // Auto birth fee provided, trigger autobirth event
-            Snake storage matron = kitties[_matronId];
+            Snake storage matron = snakes[_matronId];
             AutoBirth(_matronId, matron.cooldownEndTime);
         }
     }

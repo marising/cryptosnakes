@@ -110,7 +110,7 @@ contract SnakeBreeding is SnakeOwnership {
         returns (bool)
     {
         require(_kittyId > 0);
-        Snake storage kit = kitties[_kittyId];
+        Snake storage kit = snakes[_kittyId];
         return _isReadyToBreed(kit);
     }
 
@@ -168,8 +168,8 @@ contract SnakeBreeding is SnakeOwnership {
         view
         returns (bool)
     {
-        Snake storage matron = kitties[_matronId];
-        Snake storage sire = kitties[_sireId];
+        Snake storage matron = snakes[_matronId];
+        Snake storage sire = snakes[_sireId];
         return _isValidMatingPair(matron, _matronId, sire, _sireId);
     }
 
@@ -186,8 +186,8 @@ contract SnakeBreeding is SnakeOwnership {
     {
         require(_matronId > 0);
         require(_sireId > 0);
-        Snake storage matron = kitties[_matronId];
-        Snake storage sire = kitties[_sireId];
+        Snake storage matron = snakes[_matronId];
+        Snake storage sire = snakes[_sireId];
         return _isValidMatingPair(matron, _matronId, sire, _sireId) &&
             _isSiringPermitted(_sireId, _matronId);
     }
@@ -218,13 +218,13 @@ contract SnakeBreeding is SnakeOwnership {
         require(_isSiringPermitted(_sireId, _matronId));
 
         // Grab a reference to the potential matron
-        Snake storage matron = kitties[_matronId];
+        Snake storage matron = snakes[_matronId];
 
         // Make sure matron isn't pregnant, or in the middle of a siring cooldown
         require(_isReadyToBreed(matron));
 
         // Grab a reference to the potential sire
-        Snake storage sire = kitties[_sireId];
+        Snake storage sire = snakes[_sireId];
 
         // Make sure sire isn't pregnant, or in the middle of a siring cooldown
         require(_isReadyToBreed(sire));
@@ -245,8 +245,8 @@ contract SnakeBreeding is SnakeOwnership {
     ///  requirements have been checked.
     function _breedWith(uint256 _matronId, uint256 _sireId) internal {
         // Grab a reference to the Kitties from storage.
-        Snake storage sire = kitties[_sireId];
-        Snake storage matron = kitties[_matronId];
+        Snake storage sire = snakes[_sireId];
+        Snake storage matron = snakes[_matronId];
 
         // Mark the matron as pregnant, keeping track of who the sire is.
         matron.siringWithId = uint32(_sireId);
@@ -283,7 +283,7 @@ contract SnakeBreeding is SnakeOwnership {
 
         // Emit an AutoBirth message so the autobirth daemon knows when and for what cat to call
         // giveBirth().
-        Snake storage matron = kitties[_matronId];
+        Snake storage matron = snakes[_matronId];
         AutoBirth(_matronId, matron.cooldownEndTime);
     }
 
@@ -301,7 +301,7 @@ contract SnakeBreeding is SnakeOwnership {
         returns(uint256)
     {
         // Grab a reference to the matron in storage.
-        Snake storage matron = kitties[_matronId];
+        Snake storage matron = snakes[_matronId];
 
         // Check that the matron is a valid cat.
         require(matron.birthTime != 0);
@@ -311,7 +311,7 @@ contract SnakeBreeding is SnakeOwnership {
 
         // Grab a reference to the sire in storage.
         uint256 sireId = matron.siringWithId;
-        Snake storage sire = kitties[sireId];
+        Snake storage sire = snakes[sireId];
 
         // Determine the higher generation number of the two parents
         uint16 parentGen = matron.generation;
