@@ -118,13 +118,13 @@ contract("SnakeCore", function(accounts) {
 
     it("create a promotional kittens", async function() {
       // kittens with arbitrary genes
-      await coreC.createPromoKitty(1000, NULL_ADDRESS, { from: coo });
-      await coreC.createPromoKitty(2000, "", { from: coo });
-      await coreC.createPromoKitty(3000, "0x0", { from: coo });
-      await coreC.createPromoKitty(4000, user2, { from: coo });
+      await coreC.createPromoSnake(1000, NULL_ADDRESS, { from: coo });
+      await coreC.createPromoSnake(2000, "", { from: coo });
+      await coreC.createPromoSnake(3000, "0x0", { from: coo });
+      await coreC.createPromoSnake(4000, user2, { from: coo });
       // only coo
       await util.expectThrow(
-        coreC.createPromoKitty(5000, user1, { from: user1 })
+        coreC.createPromoSnake(5000, user1, { from: user1 })
       );
 
       const nKitties = await coreC.totalSupply();
