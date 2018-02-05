@@ -5,12 +5,12 @@ import "./Auction/ClockAuction.sol";
 import "./Auction/SiringClockAuction.sol";
 import "./Auction/SaleClockAuction.sol";
 
-/// @title Handles creating auctions for sale and siring of kitties.
+/// @title Handles creating auctions for sale and siring of snakes.
 ///  This wrapper of ReverseAuction exists only so that users can create
 ///  auctions with only one transaction.
 contract SnakeAuction is SnakeBreeding {
 
-    /// @dev The address of the ClockAuction contract that handles sales of Kitties. This
+    /// @dev The address of the ClockAuction contract that handles sales of Snakes. This
     ///  same contract handles both peer-to-peer sales as well as the gen0 sales which are
     ///  initiated every 15 minutes.
     SaleClockAuction public saleAuction;
@@ -44,10 +44,10 @@ contract SnakeAuction is SnakeBreeding {
         siringAuction = candidateContract;
     }
 
-    /// @dev Put a kitty up for auction.
+    /// @dev Put a snake up for auction.
     ///  Does some ownership trickery to create auctions in one tx.
     function createSaleAuction(
-        uint256 _kittyId,
+        uint256 _snakeId,
         uint256 _startingPrice,
         uint256 _endingPrice,
         uint256 _duration
@@ -56,14 +56,14 @@ contract SnakeAuction is SnakeBreeding {
         whenNotPaused
     {
         // Auction contract checks input sizes
-        // If kitty is already on any auction, this will throw
+        // If snake is already on any auction, this will throw
         // because it will be owned by the auction contract.
-        require(_owns(msg.sender, _kittyId));
-        _approve(_kittyId, saleAuction);
+        require(_owns(msg.sender, _snakeId));
+        _approve(_snakeId, saleAuction);
         // Sale auction throws if inputs are invalid and clears
-        // transfer and sire approval after escrowing the kitty.
+        // transfer and sire approval after escrowing the snake.
         saleAuction.createAuction(
-            _kittyId,
+            _snakeId,
             _startingPrice,
             _endingPrice,
             _duration,
@@ -71,11 +71,11 @@ contract SnakeAuction is SnakeBreeding {
         );
     }
 
-    /// @dev Put a kitty up for auction to be sire.
-    ///  Performs checks to ensure the kitty can be sired, then
+    /// @dev Put a snake up for auction to be sire.
+    ///  Performs checks to ensure the snake can be sired, then
     ///  delegates to reverse auction.
     function createSiringAuction(
-        uint256 _kittyId,
+        uint256 _snakeId,
         uint256 _startingPrice,
         uint256 _endingPrice,
         uint256 _duration
@@ -84,15 +84,15 @@ contract SnakeAuction is SnakeBreeding {
         whenNotPaused
     {
         // Auction contract checks input sizes
-        // If kitty is already on any auction, this will throw
+        // If snake is already on any auction, this will throw
         // because it will be owned by the auction contract.
-        require(_owns(msg.sender, _kittyId));
-        require(isReadyToBreed(_kittyId));
-        _approve(_kittyId, siringAuction);
+        require(_owns(msg.sender, _snakeId));
+        require(isReadyToBreed(_snakeId));
+        _approve(_snakeId, siringAuction);
         // Siring auction throws if inputs are invalid and clears
-        // transfer and sire approval after escrowing the kitty.
+        // transfer and sire approval after escrowing the snake.
         siringAuction.createAuction(
-            _kittyId,
+            _snakeId,
             _startingPrice,
             _endingPrice,
             _duration,
@@ -137,7 +137,7 @@ contract SnakeAuction is SnakeBreeding {
     }
 
     /// @dev Transfers the balance of the sale auction contract
-    /// to the KittyCore contract. We use two-step withdrawal to
+    /// to the SnakeCore contract. We use two-step withdrawal to
     /// prevent two transfer calls in the auction bid function.
     function withdrawAuctionBalances() external onlyCOO {
         saleAuction.withdrawBalance();
