@@ -1,12 +1,12 @@
 pragma solidity ^0.4.18;
 
 // // Auction wrapper functions
-import "./KittyMinting.sol";
+import "./SnakeMinting.sol";
 
 /// @title CryptoKitties: Collectible, breedable, and oh-so-adorable cats on the Ethereum blockchain.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev The main CryptoKitties contract, keeps track of kittens so they don't wander around and get lost.
-contract SnakeCore is KittyMinting {
+contract SnakeCore is SnakeMinting {
 
     // This is the main CryptoKitties contract. In order to keep our code seperated into logical sections,
     // we've broken it up in two ways. First, we have several seperately-instantiated sibling contracts

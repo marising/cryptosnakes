@@ -4,7 +4,7 @@ import './SnakeCore.sol';
 
 
 /// @title Kitty core with extra test fn and overrides
-contract KittyCoreTest is SnakeCore {
+contract SnakeCoreTest is SnakeCore {
     // https://ethereum.stackexchange.com/questions/16318/inherited-constructors
     function KittyCoreTest() public {
     }

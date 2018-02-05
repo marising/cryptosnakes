@@ -10,7 +10,7 @@ const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 const util = require("./util.js");
 // add test wrapper to make tests possible
-const KittyCore = artifacts.require("./KittyCoreTest.sol");
+const SnakeCore = artifacts.require("./SnakeCoreTest.sol");
 // A dummy implementation
 const GeneScienceMock = artifacts.require(
   "./test/contracts/GeneScienceMock.sol"
@@ -40,7 +40,7 @@ contract("SnakeCore", function(accounts) {
 
   async function deployContract() {
     debug("deploying contract");
-    coreC = await KittyCore.new();
+    coreC = await SnakeCore.new();
     // the deployer is the original CEO and can appoint a new one
     await coreC.setCEO(ceo);
     // only need to create external contracts once
@@ -528,7 +528,7 @@ contract("SnakeCore", function(accounts) {
     });
 
     it("set new contract address", async function() {
-      const coreC2 = await KittyCore.new();
+      const coreC2 = await SnakeCore.new();
       await util.expectThrow(coreC.setNewAddress(coreC2.address));
       await coreC.pause({ from: ceo });
       // CEO can appoint a new COO even while paused
