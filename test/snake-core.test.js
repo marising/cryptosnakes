@@ -144,7 +144,7 @@ contract("SnakeCore", function(accounts) {
 
     it("create a few kittens", async function() {
       // breed 4 kittens
-      await coreC.mintKittens(10, 10);
+      await coreC.mintSnakes(10, 10);
       kitA = 1;
       kitB = 2;
       kitC = 3;
@@ -193,7 +193,7 @@ contract("SnakeCore", function(accounts) {
     before(deployContract);
     it("create a few kittens", async function() {
       // breed 4 kittens
-      await coreC.mintKittens(10, 4, { from: coo });
+      await coreC.mintSnakes(10, 4, { from: coo });
       kitA = 1;
       kitB = 2;
       kitC = 3;
@@ -260,11 +260,11 @@ contract("SnakeCore", function(accounts) {
 
     it("create some kittens", async function() {
       // breed 3 genetically diff kittens
-      await coreC.mintKittens(10, 1, { from: coo });
+      await coreC.mintSnakes(10, 1, { from: coo });
       kitA = 1;
-      await coreC.mintKittens(100, 1, { from: coo });
+      await coreC.mintSnakes(100, 1, { from: coo });
       kitB = 2;
-      await coreC.mintKittens(1000, 1, { from: coo });
+      await coreC.mintSnakes(1000, 1, { from: coo });
       kitC = 3;
     });
 
@@ -391,7 +391,7 @@ contract("SnakeCore", function(accounts) {
 
     it("create some kittens", async function() {
       // breed 2 genetically diff kittens
-      await coreC.mintKittens(32, 2, { from: coo });
+      await coreC.mintSnakes(32, 2, { from: coo });
       kitA = 1;
       kitB = 2;
     });
@@ -449,8 +449,8 @@ contract("SnakeCore", function(accounts) {
       await coreC.setCOO(user1, { from: ceo });
     });
     it("new coo can do things, old coo cant anymore", async function() {
-      await util.expectThrow(coreC.mintKittens(10, 1, { from: coo }));
-      await coreC.mintKittens(10, 1, { from: user1 });
+      await util.expectThrow(coreC.mintSnakes(10, 1, { from: coo }));
+      await coreC.mintSnakes(10, 1, { from: user1 });
     });
     it("CEO can appoint another CEO", async function() {
       await util.expectThrow(coreC.setCEO(user2, { from: coo }));
@@ -474,8 +474,8 @@ contract("SnakeCore", function(accounts) {
   describe("Contract Upgrade", function() {
     before(async function redeployContract() {
       await deployContract();
-      await coreC.mintKittens(1000, 4, { from: coo });
-      await coreC.mintKittens(9000, 2, { from: coo });
+      await coreC.mintSnakes(1000, 4, { from: coo });
+      await coreC.mintSnakes(9000, 2, { from: coo });
       const nKitties = await coreC.totalSupply();
       eq(nKitties.toNumber(), 6);
       await coreC.transfer(user1, 5);
@@ -558,7 +558,7 @@ contract("SnakeCore", function(accounts) {
     });
 
     it("can set a valid breeding contract", async function() {
-      await coreC.mintKittens(777, 8);
+      await coreC.mintSnakes(777, 8);
       // forward time by 1 minute
       await util.forwardEVMTime(cooldowns[0]);
 
@@ -569,7 +569,7 @@ contract("SnakeCore", function(accounts) {
     });
 
     it("everything still works with new breeding contract", async function() {
-      await coreC.mintKittens(9999, 2, { from: coo });
+      await coreC.mintSnakes(9999, 2, { from: coo });
       await coreC.breedWith(1, 2);
       const kitA = await coreC._getSnakeHelper(1);
       eq(kitA.isGestating, true);
@@ -582,7 +582,7 @@ contract("SnakeCore", function(accounts) {
       kittyId2 = 2;
     before(async function() {
       await deployContract();
-      await coreC.mintKittens(999, 2, { from: coo });
+      await coreC.mintSnakes(999, 2, { from: coo });
       await coreC.transfer(coreC.address, kittyId1, { from: coo });
     });
 
@@ -613,7 +613,7 @@ contract("SnakeCore", function(accounts) {
       await deployContract();
       saleAuction = await SaleClockAuction.new(coreC.address, 0);
       siringAuction = await SiringClockAuction.new(coreC.address, 0);
-      await coreC.mintKittens(999, 3, { from: coo });
+      await coreC.mintSnakes(999, 3, { from: coo });
       await coreC.transfer(user1, kittyId2, { from: coo });
       await coreC.transfer(user1, kittyId3, { from: coo });
     });
@@ -834,7 +834,7 @@ contract("SnakeCore", function(accounts) {
       });
       await coreC.setCFO(cfo, { from: ceo });
       // Get some Ether into both sale and siring auctions
-      await coreC.mintKittens(1, 2, { from: coo });
+      await coreC.mintSnakes(1, 2, { from: coo });
       await coreC.createSaleAuction(1, 100000, 200000, 100, { from: coo });
       await saleAuction.bid(1, { from: user1, value: 200000 });
       await coreC.createSiringAuction(1, 100000, 200000, 100, { from: user1 });

@@ -3,7 +3,7 @@ pragma solidity ^0.4.18;
 import './SnakeCore.sol';
 
 
-/// @title Kitty Core for Rinkeby
+/// @title Snake Core for Rinkeby
 contract SnakeCoreRinkeby is SnakeCore {
     // https://ethereum.stackexchange.com/questions/16318/inherited-constructors
     function SnakeCoreRinkeby() public {
