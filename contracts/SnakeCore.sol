@@ -3,17 +3,17 @@ pragma solidity ^0.4.18;
 // // Auction wrapper functions
 import "./SnakeMinting.sol";
 
-/// @title CryptoKitties: Collectible, breedable, and oh-so-adorable cats on the Ethereum blockchain.
+/// @title CryptoSnakes: Collectible, breedable, and oh-so-adorable cats on the Ethereum blockchain.
 /// @author Axiom Zen (https://www.axiomzen.co)
-/// @dev The main CryptoKitties contract, keeps track of kittens so they don't wander around and get lost.
+/// @dev The main CryptoSnakes contract, keeps track of snakes so they don't wander around and get lost.
 contract SnakeCore is SnakeMinting {
 
-    // This is the main CryptoKitties contract. In order to keep our code seperated into logical sections,
+    // This is the main CryptoSnakes contract. In order to keep our code seperated into logical sections,
     // we've broken it up in two ways. First, we have several seperately-instantiated sibling contracts
     // that handle auctions and our super-top-secret genetic combination algorithm. The auctions are
     // seperate since their logic is somewhat complex and there's always a risk of subtle bugs. By keeping
     // them in their own contracts, we can upgrade them without disrupting the main contract that tracks
-    // kitty ownership. The genetic combination algorithm is kept seperate so we can open-source all of
+    // snake ownership. The genetic combination algorithm is kept seperate so we can open-source all of
     // the rest of our code without making it _too_ easy for folks to figure out how the genetics work.
     // Don't worry, I'm sure someone will reverse engineer it soon enough!
     //
@@ -21,25 +21,25 @@ contract SnakeCore is SnakeMinting {
     // facet of functionality of CK. This allows us to keep related code bundled together while still
     // avoiding a single giant file with everything in it. The breakdown is as follows:
     //
-    //      - KittyBase: This is where we define the most fundamental code shared throughout the core
+    //      - SnakeBase: This is where we define the most fundamental code shared throughout the core
     //             functionality. This includes our main data storage, constants and data types, plus
     //             internal functions for managing these items.
     //
-    //      - KittyAccessControl: This contract manages the various addresses and constraints for operations
+    //      - SnakeAccessControl: This contract manages the various addresses and constraints for operations
     //             that can be executed only by specific roles. Namely CEO, CFO and COO.
     //
-    //      - KittyOwnership: This provides the methods required for basic non-fungible token
+    //      - SnakeOwnership: This provides the methods required for basic non-fungible token
     //             transactions, following the draft ERC-721 spec (https://github.com/ethereum/EIPs/issues/721).
     //
-    //      - KittyBreeding: This file contains the methods necessary to breed cats together, including
+    //      - SnakeBreeding: This file contains the methods necessary to breed cats together, including
     //             keeping track of siring offers, and relies on an external genetic combination contract.
     //
-    //      - KittyAuctions: Here we have the public methods for auctioning or bidding on cats or siring
+    //      - SnakeAuctions: Here we have the public methods for auctioning or bidding on cats or siring
     //             services. The actual auction functionality is handled in two sibling contracts (one
     //             for sales and one for siring), while auction creation and bidding is mostly mediated
     //             through this facet of the core contract.
     //
-    //      - KittyMinting: This final facet contains the functionality we use for creating new gen0 cats.
+    //      - SnakeMinting: This final facet contains the functionality we use for creating new gen0 cats.
     //             We can make up to 5000 "promo" cats that can be given away (especially important when
     //             the community is new), and all others can only be created and then immediately put up
     //             for auction via an algorithmically determined starting price. Regardless of how they
@@ -49,7 +49,7 @@ contract SnakeCore is SnakeMinting {
     // Set in case the core contract is broken and an upgrade is required
     address public newContractAddress;
 
-    /// @notice Creates the main CryptoKitties smart contract instance.
+    /// @notice Creates the main CryptoSnakes smart contract instance.
     function SnakeCore() public {
         // Starts paused.
         paused = true;
@@ -60,8 +60,8 @@ contract SnakeCore is SnakeMinting {
         // the creator of the contract is also the initial COO
         cooAddress = msg.sender;
 
-        // start with the mythical kitten 0 - so we don't have generation-0 parent issues
-        _createSnake(0, 0, 0, uint256(-1), address(0));
+        // start with the mythical snake 0 - so we don't have generation-0 parent issues
+        _createSnake(0, 0, 0, uint256(0), address(0));
     }
 
     /// @dev Used to mark the smart contract as upgraded, in case there is a serious
@@ -86,9 +86,9 @@ contract SnakeCore is SnakeMinting {
         );
     }
 
-    /// @notice Returns all the relevant information about a specific kitty.
-    /// @param _id The ID of the kitty of interest.
-    function getKitty(uint256 _id)
+    /// @notice Returns all the relevant information about a specific snake.
+    /// @param _id The ID of the snake of interest.
+    function getSnake(uint256 _id)
         public
         view
         returns (
@@ -103,19 +103,19 @@ contract SnakeCore is SnakeMinting {
         uint256 generation,
         uint256 genes
     ) {
-        Snake storage kit = snakes[_id];
+        Snake storage snake = snakes[_id];
 
         // if this variable is 0 then it's not gestating
-        isGestating = (kit.siringWithId != 0);
-        isReady = (kit.cooldownEndTime <= now);
-        cooldownIndex = uint256(kit.cooldownIndex);
-        nextActionAt = uint256(kit.cooldownEndTime);
-        siringWithId = uint256(kit.siringWithId);
-        birthTime = uint256(kit.birthTime);
-        matronId = uint256(kit.matronId);
-        sireId = uint256(kit.sireId);
-        generation = uint256(kit.generation);
-        genes = kit.genes;
+        isGestating = (snake.siringWithId != 0);
+        isReady = (snake.cooldownEndTime <= now);
+        cooldownIndex = uint256(snake.cooldownIndex);
+        nextActionAt = uint256(snake.cooldownEndTime);
+        siringWithId = uint256(snake.siringWithId);
+        birthTime = uint256(snake.birthTime);
+        matronId = uint256(snake.matronId);
+        sireId = uint256(snake.sireId);
+        generation = uint256(snake.generation);
+        genes = snake.genes;
     }
 
     /// @dev Override unpause so it requires all external contract addresses

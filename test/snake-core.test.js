@@ -80,8 +80,8 @@ contract("SnakeCore", function(accounts) {
       debug(">>", res.event, res.args);
     });
     logEvents.push(eventsWatch);
-    coreC._getKittyHelper = async function(id) {
-      let attrs = await this.getKitty(id);
+    coreC._getSnakeHelper = async function(id) {
+      let attrs = await this.getSnake(id);
       return {
         isGestating: attrs[0],
         isReady: attrs[1],
@@ -210,7 +210,7 @@ contract("SnakeCore", function(accounts) {
     it("siring is only allowed with due permissions", async function() {
       await util.expectThrow(coreC.breedWith(kitD, kitA), { from: user1 });
       let now = (await coreC.timeNow()).toNumber();
-      let kitAStats = await coreC._getKittyHelper(kitA);
+      let kitAStats = await coreC._getSnakeHelper(kitA);
       debug("A before breeding:", kitAStats, now);
       assert(kitAStats.nextActionAt <= now);
       eq(kitAStats.isReady, true);
@@ -221,14 +221,14 @@ contract("SnakeCore", function(accounts) {
 
       // check kitA stats afterwards
       now = (await coreC.timeNow()).toNumber();
-      kitAStats = await coreC._getKittyHelper(kitA);
+      kitAStats = await coreC._getSnakeHelper(kitA);
       debug("kitA after breeding:", kitAStats);
       eq(kitAStats.cooldownIndex, 1);
       assert(kitAStats.nextActionAt > now);
       eq(kitAStats.isReady, false);
 
       // check kitD
-      const kitDStats = await coreC._getKittyHelper(kitD);
+      const kitDStats = await coreC._getSnakeHelper(kitD);
       debug("D:", kitDStats);
       eq(kitDStats.cooldownIndex, 1);
     });
@@ -272,7 +272,7 @@ contract("SnakeCore", function(accounts) {
       // works because they have the same owner
       await coreC.breedWith(kitA, kitB);
 
-      const attr = await coreC._getKittyHelper(kitA);
+      const attr = await coreC._getSnakeHelper(kitA);
       eq(attr.isGestating, true);
       assert(attr.nextActionAt != 0);
     });
@@ -290,7 +290,7 @@ contract("SnakeCore", function(accounts) {
       await coreC.giveBirth(kitA);
       // will be the last kitten
       kitD = (await coreC.totalSupply()).toNumber();
-      let attr = await coreC._getKittyHelper(kitD);
+      let attr = await coreC._getSnakeHelper(kitD);
       debug("kitD was born:", attr);
       eq(attr.isGestating, false);
       eq(attr.cooldownIndex, 0);
@@ -306,7 +306,7 @@ contract("SnakeCore", function(accounts) {
     });
 
     it("kitD can breed right after being born", async function() {
-      debug("kitD::", await coreC._getKittyHelper(kitD));
+      debug("kitD::", await coreC._getSnakeHelper(kitD));
       kitDcanBreed = await coreC.isReadyToBreed(kitD);
       eq(kitDcanBreed, true);
     });
@@ -318,7 +318,7 @@ contract("SnakeCore", function(accounts) {
       await util.expectThrow(coreC.breedWith(kitB, kitD));
       await coreC.breedWith(kitD, kitC);
 
-      const attr = await coreC._getKittyHelper(kitD);
+      const attr = await coreC._getSnakeHelper(kitD);
       eq(attr.isGestating, true);
       assert(attr.nextActionAt != 0);
     });
@@ -503,7 +503,7 @@ contract("SnakeCore", function(accounts) {
     it("can read state of all kittens while paused", async function() {
       const nKitties = await coreC.totalSupply();
       eq(nKitties.toNumber(), 6);
-      let attr = await coreC._getKittyHelper(1);
+      let attr = await coreC._getSnakeHelper(1);
       eq(attr.isGestating, true);
       eq(attr.cooldownIndex, 1);
       assert(attr.nextActionAt > 0);
@@ -571,7 +571,7 @@ contract("SnakeCore", function(accounts) {
     it("everything still works with new breeding contract", async function() {
       await coreC.mintKittens(9999, 2, { from: coo });
       await coreC.breedWith(1, 2);
-      const kitA = await coreC._getKittyHelper(1);
+      const kitA = await coreC._getSnakeHelper(1);
       eq(kitA.isGestating, true);
       eq(kitA.cooldownIndex, 1);
     });
