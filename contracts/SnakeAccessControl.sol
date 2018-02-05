@@ -1,18 +1,18 @@
 pragma solidity ^0.4.18;
 
-/// @title A facet of KittyCore that manages special access privileges.
+/// @title A facet of SnakeCore that manages special access privileges.
 /// @author Axiom Zen (https://www.axiomzen.co)
-/// @dev See the KittyCore contract documentation to understand how the various contract facets are arranged.
-contract KittyAccessControl {
-    // This facet controls access control for CryptoKitties. There are four roles managed here:
+/// @dev See the SnakeCore contract documentation to understand how the various contract facets are arranged.
+contract SnakeAccessControl {
+    // This facet controls access control for CryptoSnakes. There are four roles managed here:
     //
     //     - The CEO: The CEO can reassign other roles and change the addresses of our dependent smart
     //         contracts. It is also the only role that can unpause the smart contract. It is initially
-    //         set to the address that created the smart contract in the KittyCore constructor.
+    //         set to the address that created the smart contract in the SnakeCore constructor.
     //
-    //     - The CFO: The CFO can withdraw funds from KittyCore and its auction contracts.
+    //     - The CFO: The CFO can withdraw funds from SnakeCore and its auction contracts.
     //
-    //     - The COO: The COO can release gen0 kitties to auction, and mint promo cats.
+    //     - The COO: The COO can release gen0 snakes to auction, and mint promo cats.
     //
     // It should be noted that these roles are distinct without overlap in their access abilities, the
     // abilities listed for each role above are exhaustive. In particular, while the CEO can assign any

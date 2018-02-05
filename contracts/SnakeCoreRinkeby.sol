@@ -1,12 +1,12 @@
 pragma solidity ^0.4.18;
 
-import './KittyCore.sol';
+import './SnakeCore.sol';
 
 
-/// @title Kitty Core for Rinkeby
-contract KittyCoreRinkeby is KittyCore {
+/// @title Snake Core for Rinkeby
+contract SnakeCoreRinkeby is SnakeCore {
     // https://ethereum.stackexchange.com/questions/16318/inherited-constructors
-    function KittyCoreRinkeby() public {
+    function SnakeCoreRinkeby() public {
         cooldowns = [
             uint32(1 seconds),
             uint32(10 seconds),

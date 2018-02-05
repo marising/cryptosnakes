@@ -1,10 +1,10 @@
 pragma solidity ^0.4.18;
 
 // Auction wrapper functions
-import "./KittyAuction.sol";
+import "./SnakeAuction.sol";
 
-/// @title all functions related to creating kittens
-contract KittyMinting is KittyAuction {
+/// @title all functions related to creating snakes
+contract SnakeMinting is SnakeAuction {
 
     // Limits the number of cats the contract owner can ever create.
     uint256 public promoCreationLimit = 5000;
@@ -18,10 +18,10 @@ contract KittyMinting is KittyAuction {
     uint256 public promoCreatedCount;
     uint256 public gen0CreatedCount;
 
-    /// @dev we can create promo kittens, up to a limit. Only callable by COO
-    /// @param _genes the encoded genes of the kitten to be created, any value is accepted
-    /// @param _owner the future owner of the created kittens. Default to contract COO
-    function createPromoKitty(uint256 _genes, address _owner) public onlyCOO {
+    /// @dev we can create promo snakes, up to a limit. Only callable by COO
+    /// @param _genes the encoded genes of the snakes to be created, any value is accepted
+    /// @param _owner the future owner of the created snakes. Default to contract COO
+    function createPromoSnake(uint256 _genes, address _owner) public onlyCOO {
         if (_owner == address(0)) {
              _owner = cooAddress;
         }
@@ -30,19 +30,19 @@ contract KittyMinting is KittyAuction {
 
         promoCreatedCount++;
         gen0CreatedCount++;
-        _createKitty(0, 0, 0, _genes, _owner);
+        _createSnake(0, 0, 0, _genes, _owner);
     }
 
-    /// @dev Creates a new gen0 kitty with the given genes and
+    /// @dev Creates a new gen0 snake with the given genes and
     ///  creates an auction for it.
     function createGen0Auction(uint256 _genes) public onlyCOO {
         require(gen0CreatedCount < gen0CreationLimit);
 
-        uint256 kittyId = _createKitty(0, 0, 0, _genes, address(this));
-        _approve(kittyId, saleAuction);
+        uint256 snakeId = _createSnake(0, 0, 0, _genes, address(this));
+        _approve(snakeId, saleAuction);
 
         saleAuction.createAuction(
-            kittyId,
+            snakeId,
             _computeNextGen0Price(),
             0,
             gen0AuctionDuration,
