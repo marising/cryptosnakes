@@ -86,10 +86,10 @@ const b5 = s => {
 };
 
 const fullMatrixOfAllowed = async function() {
-  const nKitties = (await coreC.totalSupply()).toNumber();
-  console.log("__fullMatrixOfAllowed:", nKitties);
-  for (let i = 1; i <= nKitties; i++) {
-    for (let j = 1; j <= nKitties; j++) {
+  const nSnakes = (await coreC.totalSupply()).toNumber();
+  console.log("__fullMatrixOfAllowed:", nSnakes);
+  for (let i = 1; i <= nSnakes; i++) {
+    for (let j = 1; j <= nSnakes; j++) {
       try {
         const res = await coreC.canBreedWith(i, j);
         console.log("  canBreedWith?", i, j, res);

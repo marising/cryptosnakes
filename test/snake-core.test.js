@@ -116,8 +116,8 @@ contract("SnakeCore", function(accounts) {
   describe("Kitten creation:", function() {
     before(deployContract);
 
-    it("create a promotional kittens", async function() {
-      // kittens with arbitrary genes
+    it("create a promotional snakes", async function() {
+      // snakes with arbitrary genes
       await coreC.createPromoSnake(1000, NULL_ADDRESS, { from: coo });
       await coreC.createPromoSnake(2000, "", { from: coo });
       await coreC.createPromoSnake(3000, "0x0", { from: coo });
@@ -131,10 +131,10 @@ contract("SnakeCore", function(accounts) {
       // 4 created
       eq(nKitties.toNumber(), 4);
 
-      eq(coo, await coreC.snakeIndexToOwner(1), "kitten 1");
-      eq(coo, await coreC.snakeIndexToOwner(2), "kitten 2");
-      eq(coo, await coreC.snakeIndexToOwner(3), "kitten 3");
-      eq(user2, await coreC.snakeIndexToOwner(4), "kitten 4");
+      eq(coo, await coreC.snakeIndexToOwner(1), "snake 1");
+      eq(coo, await coreC.snakeIndexToOwner(2), "snake 2");
+      eq(coo, await coreC.snakeIndexToOwner(3), "snake 3");
+      eq(user2, await coreC.snakeIndexToOwner(4), "snake 4");
     });
   });
 
@@ -142,8 +142,8 @@ contract("SnakeCore", function(accounts) {
     let kitA, kitB, kitC, kitD;
     before(deployContract);
 
-    it("create a few kittens", async function() {
-      // breed 4 kittens
+    it("create a few snakes", async function() {
+      // breed 4 snakes
       await coreC.mintSnakes(10, 10);
       kitA = 1;
       kitB = 2;
@@ -191,8 +191,8 @@ contract("SnakeCore", function(accounts) {
   describe("Siring", function() {
     let kitA, kitB, kitC, kitD, kitE;
     before(deployContract);
-    it("create a few kittens", async function() {
-      // breed 4 kittens
+    it("create a few snakes", async function() {
+      // breed 4 snakes
       await coreC.mintSnakes(10, 4, { from: coo });
       kitA = 1;
       kitB = 2;
@@ -203,7 +203,7 @@ contract("SnakeCore", function(accounts) {
       eq(await coreC.snakeIndexToOwner(kitD), user1);
     });
 
-    it("kitten cant sire itself", async function() {
+    it("snake cant sire itself", async function() {
       await util.expectThrow(coreC.breedWith(kitA, kitA));
     });
 
@@ -233,7 +233,7 @@ contract("SnakeCore", function(accounts) {
       eq(kitDStats.cooldownIndex, 1);
     });
 
-    it("pregnant kitten cant sire", async function() {
+    it("pregnant snake cant sire", async function() {
       await coreC.approveSiring(coo, kitD, { from: user1 });
       await util.expectThrow(coreC.breedWith(kitB, kitD));
     });
@@ -258,8 +258,8 @@ contract("SnakeCore", function(accounts) {
     let kitA, kitB, kitC, kitD, kitE, kitF;
     before(deployContract);
 
-    it("create some kittens", async function() {
-      // breed 3 genetically diff kittens
+    it("create some snakes", async function() {
+      // breed 3 genetically diff snakes
       await coreC.mintSnakes(10, 1, { from: coo });
       kitA = 1;
       await coreC.mintSnakes(100, 1, { from: coo });
@@ -288,7 +288,7 @@ contract("SnakeCore", function(accounts) {
 
     it("have kitA give birth to kitD", async function() {
       await coreC.giveBirth(kitA);
-      // will be the last kitten
+      // will be the last snake
       kitD = (await coreC.totalSupply()).toNumber();
       let attr = await coreC._getSnakeHelper(kitD);
       debug("kitD was born:", attr);
@@ -341,7 +341,7 @@ contract("SnakeCore", function(accounts) {
       eq(canDdoF, false);
       await util.expectThrow(coreC.breedWith(kitF, kitD));
       await util.expectThrow(coreC.breedWith(kitD, kitF));
-      // just make sure new kitten can do fine with new
+      // just make sure new snake can do fine with new
     });
 
     it("test breedWithAuto still retains the same requirements", async function() {
@@ -379,7 +379,7 @@ contract("SnakeCore", function(accounts) {
       );
     });
 
-    it("test that anyone can give birth to a kitten", async function() {
+    it("test that anyone can give birth to a snake", async function() {
       await util.forwardEVMTime(cooldowns[2]);
       await coreC.giveBirth(kitB, { from: user3 });
     });
@@ -389,8 +389,8 @@ contract("SnakeCore", function(accounts) {
     let kitA, kitB;
     before(deployContract);
 
-    it("create some kittens", async function() {
-      // breed 2 genetically diff kittens
+    it("create some snakes", async function() {
+      // breed 2 genetically diff snakes
       await coreC.mintSnakes(32, 2, { from: coo });
       kitA = 1;
       kitB = 2;
@@ -500,7 +500,7 @@ contract("SnakeCore", function(accounts) {
       await util.expectThrow(coreC.breedWith(1, 2));
     });
 
-    it("can read state of all kittens while paused", async function() {
+    it("can read state of all snakes while paused", async function() {
       const nKitties = await coreC.totalSupply();
       eq(nKitties.toNumber(), 6);
       let attr = await coreC._getSnakeHelper(1);
@@ -520,7 +520,7 @@ contract("SnakeCore", function(accounts) {
       eq(isPaused, false);
     });
 
-    it("kitten 1 give birth", async function() {
+    it("snake 1 give birth", async function() {
       await util.forwardEVMTime(cooldowns[0]);
       await coreC.giveBirth(1);
       const nKitties = await coreC.totalSupply();
