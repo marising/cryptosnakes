@@ -1,13 +1,13 @@
 pragma solidity ^0.4.18;
 
 import './ExternalInterfaces/GeneScienceInterface.sol';
-import './KittyOwnership.sol';
+import './SnakeOwnership.sol';
 
 
 /// @title A facet of KittyCore that manages Kitty siring, gestation, and birth.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev See the KittyCore contract documentation to understand how the various contract facets are arranged.
-contract KittyBreeding is KittyOwnership {
+contract SnakeBreeding is SnakeOwnership {
 
     /// @dev The Pregnant event is fired when two cats successfully breed and the pregnancy
     ///  timer begins for the matron.

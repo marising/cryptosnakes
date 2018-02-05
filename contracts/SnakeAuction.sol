@@ -1,6 +1,6 @@
 pragma solidity ^0.4.18;
 
-import "./KittyBreeding.sol";
+import "./SnakeBreeding.sol";
 import "./Auction/ClockAuction.sol";
 import "./Auction/SiringClockAuction.sol";
 import "./Auction/SaleClockAuction.sol";
@@ -8,7 +8,7 @@ import "./Auction/SaleClockAuction.sol";
 /// @title Handles creating auctions for sale and siring of kitties.
 ///  This wrapper of ReverseAuction exists only so that users can create
 ///  auctions with only one transaction.
-contract KittyAuction is KittyBreeding {
+contract SnakeAuction is SnakeBreeding {
 
     /// @dev The address of the ClockAuction contract that handles sales of Kitties. This
     ///  same contract handles both peer-to-peer sales as well as the gen0 sales which are

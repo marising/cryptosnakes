@@ -1,13 +1,13 @@
 pragma solidity ^0.4.18;
 
-import "./KittyBase.sol";
+import "./SnakeBase.sol";
 import "./ERC721Draft.sol";
 
 /// @title The facet of the CryptoKitties core contract that manages ownership, ERC-721 (draft) compliant.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev Ref: https://github.com/ethereum/EIPs/issues/721
 ///  See the KittyCore contract documentation to understand how the various contract facets are arranged.
-contract KittyOwnership is KittyBase, ERC721 {
+contract SnakeOwnership is SnakeBase, ERC721 {
 
     /// @notice Name and symbol of the non fungible token, as defined in ERC721.
     string public name = "CryptoKitties";

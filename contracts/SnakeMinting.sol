@@ -1,10 +1,10 @@
 pragma solidity ^0.4.18;
 
 // Auction wrapper functions
-import "./KittyAuction.sol";
+import "./SnakeAuction.sol";
 
 /// @title all functions related to creating kittens
-contract SnakeMinting is KittyAuction {
+contract SnakeMinting is SnakeAuction {
 
     // Limits the number of cats the contract owner can ever create.
     uint256 public promoCreationLimit = 5000;

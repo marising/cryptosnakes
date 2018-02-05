@@ -3,7 +3,7 @@ pragma solidity ^0.4.18;
 /// @title A facet of KittyCore that manages special access privileges.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev See the KittyCore contract documentation to understand how the various contract facets are arranged.
-contract KittyAccessControl {
+contract SnakeAccessControl {
     // This facet controls access control for CryptoKitties. There are four roles managed here:
     //
     //     - The CEO: The CEO can reassign other roles and change the addresses of our dependent smart

@@ -1,12 +1,12 @@
 pragma solidity ^0.4.18;
 
-import "./KittyAccessControl.sol";
+import "./SnakeAccessControl.sol";
 
 
 /// @title Base contract for CryptoKitties. Holds all common structs, events and base variables.
 /// @author Axiom Zen (https://www.axiomzen.co)
 /// @dev See the KittyCore contract documentation to understand how the various contract facets are arranged.
-contract KittyBase is KittyAccessControl {
+contract SnakeBase is SnakeAccessControl {
     /*** EVENTS ***/
 
     /// @dev The Birth event is fired whenever a new kitten comes into existence. This obviously
