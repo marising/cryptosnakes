@@ -1,6 +1,6 @@
 const Random = artifacts.require('./Random.sol');
 
-contract('GeneScience', function() {
+contract('Random', function() {
   let random;
 
   before(async () => random = await Random.new());
