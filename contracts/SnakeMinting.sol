@@ -2,6 +2,7 @@ pragma solidity ^0.4.18;
 
 // Auction wrapper functions
 import "./SnakeAuction.sol";
+import "./Random.sol";
 
 /// @title all functions related to creating snakes
 contract SnakeMinting is SnakeAuction {
@@ -17,6 +18,12 @@ contract SnakeMinting is SnakeAuction {
     // Counts the number of cats the contract owner has created.
     uint256 public promoCreatedCount;
     uint256 public gen0CreatedCount;
+
+    Random _random;
+
+    function setRandom(address randomAddr) public onlyCEO {
+        _random = Random(randomAddr);
+    }
 
     /// @dev we can create promo snakes, up to a limit. Only callable by COO
     /// @param _genes the encoded genes of the snakes to be created, any value is accepted
@@ -50,6 +57,10 @@ contract SnakeMinting is SnakeAuction {
         );
 
         gen0CreatedCount++;
+    }
+
+    function createGen0AuctionRandom() public onlyCOO {
+        createGen0Auction(_random.gen256());
     }
 
     /// @dev Computes the next gen0 auction starting price, given
