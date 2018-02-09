@@ -1,7 +1,7 @@
 const Random = artifacts.require('./Random.sol');
 const GeneScience = artifacts.require('./GeneScience.sol');
 
-const SnakeCore = artifacts.require('./SnakeCoreTest.sol');
+const SnakeCore = artifacts.require('./SnakeCore.sol');
 const SaleClockAuction = artifacts.require('./SaleClockAuction.sol');
 const SiringClockAuction = artifacts.require('./SiringClockAuction.sol' );
 
