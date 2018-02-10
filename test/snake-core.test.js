@@ -10,6 +10,7 @@ const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";
 
 const util = require("./util.js");
 // add test wrapper to make tests possible
+const Random = artifacts.require('./Random.sol');
 const SnakeCore = artifacts.require("./SnakeCoreTest.sol");
 // A dummy implementation
 const GeneScienceMock = artifacts.require(
@@ -40,7 +41,11 @@ contract("SnakeCore", function(accounts) {
 
   async function deployContract() {
     debug("deploying contract");
+
+    const rand = await Random.new();
+
     coreC = await SnakeCore.new();
+    await coreC.setRandom(rand.address);
     // the deployer is the original CEO and can appoint a new one
     await coreC.setCEO(ceo);
     // only need to create external contracts once
@@ -807,7 +812,7 @@ contract("SnakeCore", function(accounts) {
       // still less than starting price
       // (3/5)(3/2)p = (9/10)p < p
       for (let id = 2; id < 5; id++) {
-        await coreC.createGen0Auction(1, { from: coo });
+        await coreC.createGen0AuctionRandom({ from: coo });
         const auction = await saleAuction.getAuction(id);
         assert(auction[1].eq(FINNEY_BN.mul(10)));
         await saleAuction.bid(id, { from: user1, value: FINNEY_BN.mul(10) });
